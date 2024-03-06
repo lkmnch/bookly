@@ -7,6 +7,14 @@ function RestaurantList() {
 			id: 0,
 			name: "Bella Italia",
 		},
+		{
+			id: 1,
+			name: "Steinberger Pizza Döner",
+		},
+		{
+			id: 2,
+			name: "Stadtliebe Bar & Restaurant",
+		},
 	])
 
 	return (

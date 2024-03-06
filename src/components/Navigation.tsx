@@ -6,10 +6,16 @@ function Navigation() {
 			<Link to={"/restaurants"}>
 				<li>Restaurants</li>
 			</Link>
+			<Link to={"/bookings"}>
+				<li>Bookings</li>
+			</Link>
+			<Link to={"/profile"}>
+				<li>Profile</li>
+			</Link>
 
-			<li>Bookings</li>
-			<li>Profile</li>
-			<li>Admin</li>
+			<Link to={"/administration"}>
+				<li>Administration</li>
+			</Link>
 		</ul>
 	)
 }
