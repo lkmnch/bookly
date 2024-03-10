@@ -14,7 +14,7 @@ function App() {
 				<h1>Bookly</h1>
 				<Navigation />
 			</div>
-			<main className='container'>
+			<main className='container mt-5'>
 				<Outlet />
 			</main>
 
