@@ -1,28 +1,23 @@
-import { useState } from "react"
+import { useContext } from "react"
 import Restaurant from "./Restaurant"
+import { AppContext } from "@/context/AppProvider"
+import { RestaurantContextType } from "@/@types/restaurant"
 
 function RestaurantList() {
-	const [restaurantList, setRestaurantList] = useState([
-		{
-			id: 0,
-			name: "Bella Italia",
-		},
-		{
-			id: 1,
-			name: "Steinberger Pizza Döner",
-		},
-		{
-			id: 2,
-			name: "Stadtliebe Bar & Restaurant",
-		},
-	])
+	const { restaurants } = useContext(AppContext) as RestaurantContextType
 
 	return (
-		<>
-			{restaurantList.map((restaurant) => (
-				<Restaurant name={restaurant.name} />
+		<div className='flex flex-col gap-4'>
+			{restaurants.map((restaurant) => (
+				<Restaurant
+					key={restaurant.id}
+					id={restaurant.id}
+					name={restaurant.name}
+					description={restaurant.description}
+					average_rating={restaurant.average_rating}
+				/>
 			))}
-		</>
+		</div>
 	)
 }
 

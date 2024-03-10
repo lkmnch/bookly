@@ -2,21 +2,21 @@ import { Link } from "react-router-dom"
 
 function Navigation() {
 	return (
-		<ul>
+		<div className='flex flex-col gap-4 p-4'>
 			<Link to={"/restaurants"}>
-				<li>Restaurants</li>
+				<button>Restaurants </button>
 			</Link>
 			<Link to={"/bookings"}>
-				<li>Bookings</li>
+				<button>Bookings</button>
 			</Link>
 			<Link to={"/profile"}>
-				<li>Profile</li>
+				<button>Profile</button>
 			</Link>
 
 			<Link to={"/administration"}>
-				<li>Administration</li>
+				<button>Administration</button>
 			</Link>
-		</ul>
+		</div>
 	)
 }
 

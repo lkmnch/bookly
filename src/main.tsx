@@ -7,31 +7,41 @@ import Profile from "./components/Profile.tsx"
 import RestaurantList from "./components/RestaurantList.tsx"
 import BookingList from "./components/BookingList.tsx"
 import Administration from "./components/Administration.tsx"
+import RestaurantInfoCard from "./components/RestaurantInfoCard.tsx"
+import AppProvider from "./context/AppProvider.tsx"
 
 const router = createBrowserRouter([
 	{
 		path: "/",
 		element: <App />,
-	},
-	{
-		path: "/profile",
-		element: <Profile />,
-	},
-	{
-		path: "/restaurants",
-		element: <RestaurantList />,
-	},
-	{
-		path: "/bookings",
-		element: <BookingList />,
-	},
-	{
-		path: "/administration",
-		element: <Administration />,
+		children: [
+			{
+				path: "/profile",
+				element: <Profile />,
+			},
+			{
+				path: "/restaurants",
+				element: <RestaurantList />,
+			},
+			{
+				path: "/restaurants/:id",
+				element: <RestaurantInfoCard />,
+			},
+			{
+				path: "/bookings",
+				element: <BookingList />,
+			},
+			{
+				path: "/administration",
+				element: <Administration />,
+			},
+		],
 	},
 ])
 ReactDOM.createRoot(document.getElementById("root")!).render(
 	<React.StrictMode>
-		<RouterProvider router={router} />
+		<AppProvider>
+			<RouterProvider router={router} />
+		</AppProvider>
 	</React.StrictMode>
 )
