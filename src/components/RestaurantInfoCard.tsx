@@ -19,60 +19,57 @@ import Rating from "./Rating"
 import { AppContext } from "@/context/AppProvider"
 import { RestaurantContextType } from "@/@types/restaurant"
 import DatePicker from "./DatePicker"
-import { Popover, PopoverTrigger } from "./ui/popover"
+import imgUrl from "../assets/placeholder-image.png"
+import { Popover, PopoverTrigger, PopoverContent } from "./ui/popover"
 import { cn } from "@/lib/utils"
 import { ClockIcon } from "@radix-ui/react-icons"
+import { Input } from "./ui/input"
+import TimePicker from "./TimePicker"
+import RestaurantMenu from "./RestaurantMenu"
 
 function RestaurantInfoCard() {
 	const { restaurants, currentId } = useContext(
 		AppContext
 	) as RestaurantContextType
 	return (
-		<Card>
-			<CardHeader>
-				<CardTitle>{restaurants[currentId].name}</CardTitle>
-				<CardDescription>{restaurants[currentId].description}</CardDescription>
-			</CardHeader>
-			<CardContent>
-				<div className='flex justify-center mb-4'>
-					<Carousel className=' max-w-lg'>
-						<CarouselContent>
-							{Array.from({ length: 5 }).map((_, index) => (
-								<CarouselItem key={index}>
-									<div className='p-1'>
-										<Card>
-											<CardContent className='flex aspect-square items-center justify-center p-6'>
-												<span className='text-4xl font-semibold'>
-													{index + 1}
-												</span>
-											</CardContent>
-										</Card>
-									</div>
-								</CarouselItem>
-							))}
-						</CarouselContent>
-						<CarouselPrevious />
-						<CarouselNext />
-					</Carousel>
-				</div>
+		<div className='flex flex-col gap-4'>
+			<div>
+				<img id='CardImage' src={imgUrl} />
+			</div>
+			{/* <div className='flex mb-4'>
+				* <Carousel className=' max-w-lg'>
+					<CarouselContent>
+						{Array.from({ length: 5 }).map((_, index) => (
+							<CarouselItem key={index}>
+								<div className='p-1'>
+									<Card>
+										<CardContent className='flex aspect-square items-center justify-center p-6'>
+											<span className='text-4xl font-semibold'>
+												{index + 1}
+											</span>
+										</CardContent>
+									</Card>
+								</div>
+							</CarouselItem>
+						))}
+					</CarouselContent>
+					 <CarouselPrevious />
+					<CarouselNext />
+				</Carousel>
+			</div> */}
 
-				<Rating rating={restaurants[currentId].average_rating} />
-			</CardContent>
-			<CardFooter className='flex justify-end gap-4'>
+			<h1 className='text-2xl'>{restaurants[currentId].name}</h1>
+			<Rating rating={restaurants[currentId].average_rating} />
+			{restaurants[currentId].description}
+			<div className='flex gap-4'>
 				<DatePicker />
-				<Popover>
-					<PopoverTrigger asChild>
-						<Button
-							variant={"outline"}
-							className={cn("w-[240px] justify-start text-left font-normal")}>
-							<ClockIcon className='mr-2 h-4 w-4' />
-							{<span>Uhrzeit auswählen</span>}
-						</Button>
-					</PopoverTrigger>
-				</Popover>
-				<Button>Buchen</Button>
-			</CardFooter>
-		</Card>
+				<TimePicker />
+				<Button>
+					<span>Buchen</span>
+				</Button>
+			</div>
+			<RestaurantMenu />
+		</div>
 	)
 }
 
