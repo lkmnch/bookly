@@ -9,12 +9,12 @@ import { Outlet } from "react-router-dom"
 
 function App() {
 	return (
-		<div className=' flex'>
+		<div className=' flex h-screen'>
 			<div id='sidebar' className='bg-lime-950 text-white h-screen'>
 				<h1>Bookly</h1>
 				<Navigation />
 			</div>
-			<main className='container mt-5'>
+			<main className=' mt-5 overflow-y-auto p-4 flex-1'>
 				<Outlet />
 			</main>
 

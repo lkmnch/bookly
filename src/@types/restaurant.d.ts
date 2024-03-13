@@ -10,3 +10,15 @@ export type RestaurantContextType = {
 	currentId: number
 	setCurrentId: React.Dispatch<React.SetStateAction<number>>
 }
+
+export interface IMenuItem {
+	id: number
+	name: string
+	description: string
+	category: string
+	price: number
+}
+
+export type MenuItemsByCategory = {
+	[category: string]: IMenuItem[]
+}
