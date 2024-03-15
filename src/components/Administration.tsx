@@ -1,5 +1,11 @@
+import SeatingPlan from "./SeatingPlan"
+
 function Administration() {
-	return <div>Administration</div>
+	return (
+		<>
+			<SeatingPlan />
+		</>
+	)
 }
 
 export default Administration

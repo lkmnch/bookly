@@ -82,7 +82,7 @@ function RestaurantMenu() {
 						)
 					)}
 				</div>
-				<Separator />
+				<Separator className='mb-4' />
 
 				<div className='flex flex-col gap-2'>
 					{getFilteredMenuItems(selectedCategory).map((item, index) => (
