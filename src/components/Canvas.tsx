@@ -1,27 +1,26 @@
 import React from "react"
 import { useSortable } from "@dnd-kit/sortable"
 import { CSS } from "@dnd-kit/utilities"
-import { useDraggable, useDroppable } from "@dnd-kit/core"
-import Seat from "./Seat"
+import { UniqueIdentifier, useDraggable, useDroppable } from "@dnd-kit/core"
+
+import CanvasTile from "./CanvasTile"
+import { SeatType } from "@/@types/restaurant"
 
 interface CanvasProps {
-	seats: {
-		id: string
-		label: string
-	}[]
+	activeSeat: SeatType | undefined
+	overId: UniqueIdentifier
 }
 
-const Canvas: React.FC<CanvasProps> = ({ seats }) => {
-	const { setNodeRef } = useDroppable({
-		id: "canvas",
-	})
-
+const Canvas: React.FC<CanvasProps> = ({ activeSeat, overId }) => {
 	return (
-		<div
-			ref={setNodeRef}
-			className='bg-gray-100 p-4 rounded min-h-[400px] min-w-[400px]'>
-			{seats.map((seat) => (
-				<Seat key={seat.id} id={seat.id} label={seat.label} />
+		<div className='bg-gray-100 rounded h-[1000px] w-[1000px] grid grid-cols-25 grid-rows-25 '>
+			{[...Array(625)].map((_, index) => (
+				<CanvasTile
+					key={index}
+					id={index}
+					activeSeat={activeSeat}
+					overId={overId}
+				/>
 			))}
 		</div>
 	)

@@ -22,3 +22,8 @@ export interface IMenuItem {
 export type MenuItemsByCategory = {
 	[category: string]: IMenuItem[]
 }
+
+export type SeatType = {
+	id: number
+	label: string
+}

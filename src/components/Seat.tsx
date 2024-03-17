@@ -1,14 +1,8 @@
 import { useDraggable } from "@dnd-kit/core"
-import Canvas from "./Canvas"
-import { useSortable } from "@dnd-kit/sortable"
+import { SeatType } from "@/@types/restaurant"
 
-interface SeatProps {
-	id: string
-	label: string
-}
-
-const Seat = ({ id, label }: SeatProps) => {
-	const { attributes, listeners, setNodeRef, transform } = useSortable({
+const Seat = ({ id, label }: SeatType) => {
+	const { attributes, listeners, setNodeRef, transform } = useDraggable({
 		id,
 	})
 
@@ -24,7 +18,7 @@ const Seat = ({ id, label }: SeatProps) => {
 			style={style}
 			{...listeners}
 			{...attributes}
-			className='bg-gray-200 p-2  m-2 rounded cursor-move'>
+			className='bg-orange-300  rounded cursor-move h-10 w-10'>
 			{label}
 		</div>
 	)
