@@ -27,3 +27,8 @@ export type SeatType = {
 	id: number
 	label: string
 }
+
+export type activeSeatType = {
+	activeSeat: SeatType
+	overId: number
+}

@@ -1,62 +1,67 @@
-import { useEffect, useState } from "react"
-import {
-	DndContext,
-	DragEndEvent,
-	DragStartEvent,
-	UniqueIdentifier,
-} from "@dnd-kit/core"
+import { useState } from "react"
+import { Active, DndContext, DragEndEvent, Over } from "@dnd-kit/core"
 import Canvas from "./Canvas"
 import Seat from "./Seat"
-import { SeatType } from "@/@types/restaurant"
+import { SeatType, activeSeatType } from "@/@types/restaurant"
 
 function SeatingPlan() {
 	const [seats, setSeats] = useState<SeatType[]>([])
 	const [draggedSeats, setDraggedSeats] = useState<SeatType[]>([])
-	const [activeSeat, setActiveSeat] = useState<SeatType>()
-	const [overId, setOverId] = useState<UniqueIdentifier>(0)
+	const [activeSeats, setActiveSeats] = useState<activeSeatType[]>([])
 	const [nextSeatId, setNextSeatId] = useState(1)
 
 	const addSeat = () => {
-		const newSeat = { id: nextSeatId, label: `Seat ${nextSeatId}` }
+		const newSeat = { id: nextSeatId, label: `S ${nextSeatId}` }
 		setSeats([...seats, newSeat])
 		setNextSeatId(nextSeatId + 1)
 	}
 
-	/* 	const handleDragStart = (event: DragStartEvent) => {
-		console.log("drag start event", event)
+	const setTheActiveSeats = (
+		seatArray: SeatType[],
+		over: Over,
+		active: Active,
+		number: number
+	) => {
+		console.log("function", number)
+		console.log(seatArray)
+		if (over && seatArray.length !== 0) {
+			const newActiveSeat = {
+				activeSeat: seatArray.find((s) => s.id === active.id) as SeatType,
+				overId: over.id as number,
+			}
+			if (newActiveSeat) {
+				const isNewActiveSeatIncluded = activeSeats.some(
+					(activeSeat, index) => {
+						const isActiveSeatMatch =
+							activeSeat.activeSeat.id === newActiveSeat.activeSeat.id &&
+							activeSeat.activeSeat.label === newActiveSeat.activeSeat.label
 
-		const { active } = event
+						if (isActiveSeatMatch) {
+							activeSeats[index].overId = newActiveSeat.overId
+						}
+						return isActiveSeatMatch
+					}
+				)
 
-		if (active) {
+				if (!isNewActiveSeatIncluded) {
+					setActiveSeats([...activeSeats, newActiveSeat])
+				}
+			}
+
 			setSeats(seats.filter((s) => s.id !== active.id))
 		}
-	} */
+	}
 	const handleDragEnd = (event: DragEndEvent) => {
 		const { active, over } = event
-		console.log(event)
 		const draggedSeat = seats.find((s) => s.id === active.id)
 		console.log(draggedSeat)
-		draggedSeat &&
-			setDraggedSeats((prevDraggedSeats) => {
-				const newDraggedSeats = [...prevDraggedSeats, draggedSeat]
-				if (over && newDraggedSeats.length !== 0) {
-					setActiveSeat(newDraggedSeats.find((s) => s.id === active.id))
-					setOverId(over.id)
-					setSeats(seats.filter((s) => s.id !== active.id))
-				}
-				return newDraggedSeats
-			})
-		if (over && draggedSeats.length !== 0) {
-			setActiveSeat(draggedSeats.find((s) => s.id === active.id))
-			setOverId(over.id)
-			setSeats(seats.filter((s) => s.id !== active.id))
-		}
-
-		// if (activeSeat) {
-		// 	// setActiveSeat(activeSeat)
-		//
-		// 	// weitere Variable Trennen von filtern und gefundenen seats
-		// }
+		draggedSeat
+			? setDraggedSeats((prevDraggedSeats) => {
+					const newDraggedSeats = [...prevDraggedSeats, draggedSeat]
+					setTheActiveSeats(newDraggedSeats, over as Over, active, 1)
+					return newDraggedSeats
+			  })
+			: setTheActiveSeats(draggedSeats, over as Over, active, 2)
 	}
 
 	return (
@@ -73,7 +78,7 @@ function SeatingPlan() {
 					))}
 				</div>
 				<div className='ml-4 flex gap-1 flex-wrap '>
-					<Canvas activeSeat={activeSeat} overId={overId} />
+					<Canvas activeSeats={activeSeats} />
 				</div>
 			</div>
 		</DndContext>

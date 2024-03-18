@@ -1,30 +1,33 @@
 import { UniqueIdentifier, useDroppable } from "@dnd-kit/core"
 
 import Seat from "./Seat"
-import { SeatType } from "@/@types/restaurant"
+import { activeSeatType } from "@/@types/restaurant"
 
 function CanvasTile({
 	id,
-	overId,
-	activeSeat,
+
+	activeSeats,
 }: {
 	id: number
-	overId: UniqueIdentifier
-	activeSeat: SeatType | undefined
+	activeSeats: activeSeatType[]
 }) {
 	const { setNodeRef } = useDroppable({
 		id: id,
 	})
-	// console.log("tile" + id)
-	// console.log("overId" + overId)
+
+	//ueber activeSeats gehen und nur den nehmen (filter?) welcher die overId hat die die selbe ist wie die tileId
+
+	const activeSeatThatIsOverThisTile = activeSeats.filter(
+		(activeSeat) => activeSeat.overId == id
+	)
+
 	return (
 		<div ref={setNodeRef} className='bg-slate-200   border-2 border-gray-500'>
-			{/* <span>{id}</span> */}
-			{activeSeat?.id && id == overId && (
+			{activeSeatThatIsOverThisTile.length == 1 && (
 				<Seat
-					key={activeSeat?.id}
-					id={activeSeat?.id}
-					label={activeSeat?.label}
+					key={activeSeatThatIsOverThisTile[0]?.activeSeat.id}
+					id={activeSeatThatIsOverThisTile[0]?.activeSeat.id}
+					label={activeSeatThatIsOverThisTile[0]?.activeSeat.label}
 				/>
 			)}
 		</div>
