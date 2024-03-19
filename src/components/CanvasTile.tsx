@@ -1,4 +1,4 @@
-import { UniqueIdentifier, useDroppable } from "@dnd-kit/core"
+import { useDroppable } from "@dnd-kit/core"
 
 import Seat from "./Seat"
 import { activeSeatType } from "@/@types/restaurant"

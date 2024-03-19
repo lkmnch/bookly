@@ -3,6 +3,7 @@ import { Active, DndContext, DragEndEvent, Over } from "@dnd-kit/core"
 import Canvas from "./Canvas"
 import Seat from "./Seat"
 import { SeatType, activeSeatType } from "@/@types/restaurant"
+import RemoveSeat from "./RemoveSeat"
 
 function SeatingPlan() {
 	const [seats, setSeats] = useState<SeatType[]>([])
@@ -16,52 +17,65 @@ function SeatingPlan() {
 		setNextSeatId(nextSeatId + 1)
 	}
 
-	const setTheActiveSeats = (
+	const updateActiveSeats = (
 		seatArray: SeatType[],
 		over: Over,
-		active: Active,
-		number: number
+		active: Active
 	) => {
-		console.log("function", number)
-		console.log(seatArray)
-		if (over && seatArray.length !== 0) {
-			const newActiveSeat = {
-				activeSeat: seatArray.find((s) => s.id === active.id) as SeatType,
-				overId: over.id as number,
-			}
-			if (newActiveSeat) {
-				const isNewActiveSeatIncluded = activeSeats.some(
-					(activeSeat, index) => {
-						const isActiveSeatMatch =
-							activeSeat.activeSeat.id === newActiveSeat.activeSeat.id &&
-							activeSeat.activeSeat.label === newActiveSeat.activeSeat.label
+		if (over != null) {
+			const isOverIdInActiveSeats = activeSeats.some((activeSeat) => {
+				return activeSeat.overId == over.id
+			})
 
-						if (isActiveSeatMatch) {
-							activeSeats[index].overId = newActiveSeat.overId
-						}
-						return isActiveSeatMatch
-					}
-				)
-
-				if (!isNewActiveSeatIncluded) {
-					setActiveSeats([...activeSeats, newActiveSeat])
+			if (!isOverIdInActiveSeats) {
+				const newActiveSeat = {
+					activeSeat: seatArray.find((s) => s.id === active.id) as SeatType,
+					overId: over.id as number, //if(over.id in seatArray){seatArray.overId}else{over.id}
 				}
-			}
+				if (newActiveSeat) {
+					const isNewActiveSeatIncluded = activeSeats.some(
+						(activeSeat, index) => {
+							const isActiveSeatMatch =
+								activeSeat.activeSeat.id === newActiveSeat.activeSeat.id &&
+								activeSeat.activeSeat.label === newActiveSeat.activeSeat.label
+							console.log(isActiveSeatMatch)
+							if (isActiveSeatMatch) {
+								activeSeats[index].overId = newActiveSeat.overId
+							}
 
-			setSeats(seats.filter((s) => s.id !== active.id))
+							return isActiveSeatMatch
+						}
+					)
+
+					if (!isNewActiveSeatIncluded) {
+						setActiveSeats([...activeSeats, newActiveSeat])
+					}
+				}
+
+				setSeats(seats.filter((s) => s.id !== active.id))
+			}
+			if (over.id === "remove-area") {
+				const filteredActiveSeats = activeSeats.filter(
+					(activeSeat) => activeSeat.activeSeat.id !== active.id
+				)
+				setActiveSeats(filteredActiveSeats)
+			}
 		}
 	}
 	const handleDragEnd = (event: DragEndEvent) => {
+		console.log(event)
 		const { active, over } = event
 		const draggedSeat = seats.find((s) => s.id === active.id)
 		console.log(draggedSeat)
-		draggedSeat
-			? setDraggedSeats((prevDraggedSeats) => {
-					const newDraggedSeats = [...prevDraggedSeats, draggedSeat]
-					setTheActiveSeats(newDraggedSeats, over as Over, active, 1)
-					return newDraggedSeats
-			  })
-			: setTheActiveSeats(draggedSeats, over as Over, active, 2)
+		if (draggedSeat) {
+			setDraggedSeats((prevDraggedSeats) => {
+				const newDraggedSeats = [...prevDraggedSeats, draggedSeat]
+				updateActiveSeats(newDraggedSeats, over as Over, active)
+				return newDraggedSeats
+			})
+		} else {
+			updateActiveSeats(draggedSeats, over as Over, active)
+		}
 	}
 
 	return (
@@ -73,6 +87,7 @@ function SeatingPlan() {
 						onClick={addSeat}>
 						Add Seat
 					</button>
+					<RemoveSeat />
 					{seats.map((seat) => (
 						<Seat key={seat.id} id={seat.id} label={seat.label} />
 					))}

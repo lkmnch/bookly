@@ -1,7 +1,4 @@
 import React from "react"
-
-import { UniqueIdentifier } from "@dnd-kit/core"
-
 import CanvasTile from "./CanvasTile"
 import { activeSeatType } from "@/@types/restaurant"
 
