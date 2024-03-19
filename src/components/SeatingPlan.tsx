@@ -55,6 +55,10 @@ function SeatingPlan() {
 				setSeats(seats.filter((s) => s.id !== active.id))
 			}
 			if (over.id === "remove-area") {
+				const filteredDraggedSeats = seatArray.filter(
+					(seat) => seat.id !== active.id
+				)
+				setDraggedSeats(filteredDraggedSeats)
 				const filteredActiveSeats = activeSeats.filter(
 					(activeSeat) => activeSeat.activeSeat.id !== active.id
 				)
