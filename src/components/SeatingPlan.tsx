@@ -1,11 +1,17 @@
-import { useState } from "react"
+import { useState, useContext } from "react"
 import { Active, DndContext, DragEndEvent, Over } from "@dnd-kit/core"
 import Canvas from "./Canvas"
 import Seat from "./Seat"
-import { SeatType, activeSeatType } from "@/@types/restaurant"
+import {
+	RestaurantContextType,
+	SeatType,
+	activeSeatType,
+} from "@/@types/restaurant"
 import RemoveSeat from "./RemoveSeat"
+import { AppContext } from "@/context/AppProvider"
 
 function SeatingPlan() {
+	const { setSeatingPlan } = useContext(AppContext) as RestaurantContextType
 	const [seats, setSeats] = useState<SeatType[]>([])
 	const [draggedSeats, setDraggedSeats] = useState<SeatType[]>([])
 	const [activeSeats, setActiveSeats] = useState<activeSeatType[]>([])
@@ -15,6 +21,9 @@ function SeatingPlan() {
 		const newSeat = { id: nextSeatId, label: `S ${nextSeatId}` }
 		setSeats([...seats, newSeat])
 		setNextSeatId(nextSeatId + 1)
+	}
+	const saveSeats = () => {
+		setSeatingPlan({ activeSeats })
 	}
 
 	const updateActiveSeats = (
@@ -92,6 +101,11 @@ function SeatingPlan() {
 						Add Seat
 					</button>
 					<RemoveSeat />
+					<button
+						className='bg-green-500 text-white px-4 py-2 rounded mb-4'
+						onClick={saveSeats}>
+						Save Seating Plan
+					</button>
 					{seats.map((seat) => (
 						<Seat key={seat.id} id={seat.id} label={seat.label} />
 					))}

@@ -9,6 +9,9 @@ export type RestaurantContextType = {
 	restaurants: IRestaurant[]
 	currentId: number
 	setCurrentId: React.Dispatch<React.SetStateAction<number>>
+	setSeatingPlan: React.Dispatch<
+		React.SetStateAction<seatingPlanType | undefined>
+	>
 }
 
 export interface IMenuItem {
@@ -31,4 +34,9 @@ export type SeatType = {
 export type activeSeatType = {
 	activeSeat: SeatType
 	overId: number
+}
+
+export type seatingPlanType = {
+	activeSeats: activeSeatType[]
+	restaurantId?: number
 }

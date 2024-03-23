@@ -1,5 +1,9 @@
 import { createContext, useState } from "react"
-import { IRestaurant, RestaurantContextType } from "@/@types/restaurant"
+import {
+	IRestaurant,
+	RestaurantContextType,
+	seatingPlanType,
+} from "@/@types/restaurant"
 
 export const AppContext = createContext<RestaurantContextType | null>(null)
 
@@ -29,12 +33,15 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
 			average_rating: 4,
 		},
 	])
+	const [seatingPlan, setSeatingPlan] = useState<seatingPlanType>()
+	console.log(seatingPlan)
 	return (
 		<AppContext.Provider
 			value={{
 				restaurants: restaurantList,
 				currentId: currentId,
 				setCurrentId: setCurrentId,
+				setSeatingPlan: setSeatingPlan,
 			}}>
 			{children}
 		</AppContext.Provider>
