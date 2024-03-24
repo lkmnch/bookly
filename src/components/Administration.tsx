@@ -1,11 +1,7 @@
 import SeatingPlan from "./SeatingPlan"
 
 function Administration() {
-	return (
-		<>
-			<SeatingPlan />
-		</>
-	)
+	return <SeatingPlan />
 }
 
 export default Administration

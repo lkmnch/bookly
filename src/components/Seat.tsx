@@ -1,5 +1,5 @@
 import { useDraggable } from "@dnd-kit/core"
-import { SeatType } from "@/@types/restaurant"
+import { SeatType } from "@/lib/types/restaurant"
 
 const Seat = ({ id, label }: SeatType) => {
 	const { attributes, listeners, setNodeRef, transform } = useDraggable({

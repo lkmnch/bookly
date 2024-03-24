@@ -1,23 +1,9 @@
+"use client"
 import React, { useContext } from "react"
-import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardFooter,
-	CardHeader,
-	CardTitle,
-} from "./ui/card"
 import { Button } from "./ui/button"
-import {
-	Carousel,
-	CarouselContent,
-	CarouselItem,
-	CarouselNext,
-	CarouselPrevious,
-} from "@/components/ui/carousel"
 import Rating from "./Rating"
-import { AppContext } from "@/context/AppProvider"
-import { RestaurantContextType } from "@/@types/restaurant"
+import { AppContext } from "../app/context/AppProvider"
+import { RestaurantContextType } from "@/lib/types/restaurant"
 import DatePicker from "./DatePicker"
 import imgUrl from "../assets/placeholder-image.png"
 import { Popover, PopoverTrigger, PopoverContent } from "./ui/popover"
@@ -34,7 +20,7 @@ function RestaurantInfoCard() {
 	return (
 		<div className='flex flex-col gap-4'>
 			<div>
-				<img id='CardImage' src={imgUrl} />
+				<img id='CardImage' src='/placeholder-image.png' />
 			</div>
 			{/* <div className='flex mb-4'>
 				* <Carousel className=' max-w-lg'>

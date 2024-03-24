@@ -1,7 +1,7 @@
 import { useDroppable } from "@dnd-kit/core"
 
 import Seat from "./Seat"
-import { activeSeatType } from "@/@types/restaurant"
+import { activeSeatType } from "@/lib/types/restaurant"
 
 function CanvasTile({
 	id,
@@ -22,7 +22,7 @@ function CanvasTile({
 	)
 
 	return (
-		<div ref={setNodeRef} className='bg-slate-200   border-2 border-gray-500'>
+		<div ref={setNodeRef} className='bg-slate-200 border-2 border-gray-500'>
 			{activeSeatThatIsOverThisTile.length == 1 && (
 				<Seat
 					key={activeSeatThatIsOverThisTile[0]?.activeSeat.id}

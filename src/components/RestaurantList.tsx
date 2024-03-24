@@ -1,7 +1,8 @@
+"use client"
 import { useContext } from "react"
 import Restaurant from "./Restaurant"
-import { AppContext } from "@/context/AppProvider"
-import { RestaurantContextType } from "@/@types/restaurant"
+import { AppContext } from "../app/context/AppProvider"
+import { RestaurantContextType } from "../lib/types/restaurant"
 
 function RestaurantList() {
 	const { restaurants } = useContext(AppContext) as RestaurantContextType

@@ -1,6 +1,6 @@
 import React from "react"
 import CanvasTile from "./CanvasTile"
-import { activeSeatType } from "@/@types/restaurant"
+import { activeSeatType } from "@/lib/types/restaurant"
 
 interface CanvasProps {
 	activeSeats: activeSeatType[]

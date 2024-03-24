@@ -1,3 +1,4 @@
+"use client"
 import {
 	Card,
 	CardContent,
@@ -5,20 +6,24 @@ import {
 	CardHeader,
 	CardTitle,
 } from "./ui/card"
-import imgUrl from "../assets/placeholder-image.png"
+
 import Rating from "./Rating"
-import { Link } from "react-router-dom"
-import { IRestaurant, RestaurantContextType } from "@/@types/restaurant"
+import Link from "next/link"
+import { IRestaurant, RestaurantContextType } from "../lib/types/restaurant"
 import { useContext } from "react"
-import { AppContext } from "@/context/AppProvider"
+import { AppContext } from "../app/context/AppProvider"
 
 function Restaurant({ id, name, description, average_rating }: IRestaurant) {
 	const { setCurrentId } = useContext(AppContext) as RestaurantContextType
 	return (
 		<Card className=' hover:bg-slate-50' onClick={() => setCurrentId(id)}>
-			<Link to={`/restaurants/${id}`} className='flex'>
+			<Link href={`/restaurants/${id}`} className='flex'>
 				<div>
-					<img id='CardImage' src={imgUrl} />
+					<img
+						id='CardImage'
+						src={`/placeholder-image.png`}
+						alt='Image of Restaurant'
+					/>
 				</div>
 				<div>
 					<CardHeader>

@@ -1,3 +1,4 @@
+"use client"
 import { useState } from "react"
 import {
 	Card,
@@ -7,7 +8,7 @@ import {
 	CardTitle,
 } from "./ui/card"
 import { Separator } from "./ui/separator"
-import { IMenuItem, MenuItemsByCategory } from "@/@types/restaurant"
+import { IMenuItem, MenuItemsByCategory } from "@/lib/types/restaurant"
 
 function RestaurantMenu() {
 	const [selectedCategory, setSelectedCategory] = useState("All")
@@ -34,6 +35,7 @@ function RestaurantMenu() {
 			price: 5.99,
 		},
 	]
+	const categorys = menuItems.map((item) => item.category)
 
 	function groupMenuItemsByCategory(
 		menuItems: IMenuItem[]
@@ -57,50 +59,41 @@ function RestaurantMenu() {
 	}
 
 	return (
-		<>
-			<div>
-				<div className='flex mb-4'>
-					<button
-						onClick={() => setSelectedCategory("All")}
-						className={`mr-2 ${selectedCategory === "All" ? "font-bold" : ""}`}>
-						Alle
-					</button>
+		<div>
+			<div className='flex mb-4'>
+				<button
+					onClick={() => setSelectedCategory("All")}
+					className={`mr-2 ${selectedCategory === "All" ? "font-bold" : ""}`}>
+					Alle
+				</button>
 
-					{[...new Set(menuItems.map((item) => item.category))].map(
-						(category) => (
-							<div className='flex gap-1'>
-								<Separator orientation='vertical' />
-								<button
-									key={category}
-									onClick={() => setSelectedCategory(category)}
-									className={`mr-2 ${
-										selectedCategory === category ? "font-bold" : ""
-									}`}>
-									{category[0].toUpperCase() + category.slice(1)}
-								</button>
-							</div>
-						)
-					)}
-				</div>
-				<Separator className='mb-4' />
-
-				<div className='flex flex-col gap-2'>
-					{getFilteredMenuItems(selectedCategory).map((item, index) => (
-						<Card key={item.id}>
-							<CardHeader>
-								<CardTitle>{item.name}</CardTitle>
-								<CardDescription>
-									<p>{item.description}</p>
-								</CardDescription>
-							</CardHeader>
-							<CardContent>
-								<p>{item.price} €</p>
-							</CardContent>
-						</Card>
-					))}
-				</div>
+				{categorys.map((category) => (
+					<div className='flex gap-1' key={category}>
+						<Separator orientation='vertical' />
+						<button
+							onClick={() => setSelectedCategory(category)}
+							className={`mr-2 ${
+								selectedCategory === category ? "font-bold" : ""
+							}`}>
+							{category[0].toUpperCase() + category.slice(1)}
+						</button>
+					</div>
+				))}
 			</div>
-		</>
+			<Separator className='mb-4' />
+
+			<div className='flex flex-col gap-2'>
+				{getFilteredMenuItems(selectedCategory).map((item, index) => (
+					<Card key={item.id}>
+						<CardHeader>
+							<CardTitle>{item.name}</CardTitle>
+							<CardDescription>{item.description}</CardDescription>
+						</CardHeader>
+						<CardContent>{item.price} €</CardContent>
+					</Card>
+				))}
+			</div>
+		</div>
 	)
 }
 

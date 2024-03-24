@@ -1,9 +1,11 @@
+"use client"
+
 import { createContext, useState } from "react"
 import {
 	IRestaurant,
 	RestaurantContextType,
 	seatingPlanType,
-} from "@/@types/restaurant"
+} from "../../lib/types/restaurant"
 
 export const AppContext = createContext<RestaurantContextType | null>(null)
 
@@ -34,7 +36,7 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
 		},
 	])
 	const [seatingPlan, setSeatingPlan] = useState<seatingPlanType>()
-	console.log(seatingPlan)
+
 	return (
 		<AppContext.Provider
 			value={{

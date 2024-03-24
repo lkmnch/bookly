@@ -1,3 +1,4 @@
+"use client"
 import { useState, useContext } from "react"
 import { Active, DndContext, DragEndEvent, Over } from "@dnd-kit/core"
 import Canvas from "./Canvas"
@@ -6,9 +7,9 @@ import {
 	RestaurantContextType,
 	SeatType,
 	activeSeatType,
-} from "@/@types/restaurant"
+} from "@/lib/types/restaurant"
 import RemoveSeat from "./RemoveSeat"
-import { AppContext } from "@/context/AppProvider"
+import { AppContext } from "@/app/context/AppProvider"
 
 function SeatingPlan() {
 	const { setSeatingPlan } = useContext(AppContext) as RestaurantContextType
