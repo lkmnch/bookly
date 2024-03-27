@@ -1,35 +1,60 @@
+"use client"
 import { useDroppable } from "@dnd-kit/core"
 
 import Seat from "./Seat"
-import { activeSeatType } from "@/lib/types/restaurant"
+import { RestaurantContextType, activeSeatType } from "@/lib/types/restaurant"
+import { useContext, useEffect, useState } from "react"
+import { AppContext } from "@/app/context/AppProvider"
+import { usePathname } from "next/navigation"
 
 function CanvasTile({
 	id,
-
 	activeSeats,
+	setSelectedSeats,
 }: {
 	id: number
-	activeSeats: activeSeatType[]
+	activeSeats?: activeSeatType[]
+	setSelectedSeats?: React.Dispatch<React.SetStateAction<number>>
 }) {
 	const { setNodeRef } = useDroppable({
 		id: id,
 	})
+	const [activeSeatThatIsOverThisTile, setActiveSeatThatIsOverThisTile] =
+		useState<activeSeatType[]>()
 
-	//ueber activeSeats gehen und nur den nehmen (filter?) welcher die overId hat die die selbe ist wie die tileId
-
-	const activeSeatThatIsOverThisTile = activeSeats.filter(
-		(activeSeat) => activeSeat.overId == id
-	)
+	const { seatingPlan } = useContext(AppContext) as RestaurantContextType
+	const pathname = usePathname()
+	useEffect(() => {
+		if (activeSeats) {
+			setActiveSeatThatIsOverThisTile(
+				activeSeats.filter((activeSeat) => activeSeat.overId == id)
+			)
+		}
+	}, [JSON.stringify(activeSeats)])
 
 	return (
 		<div ref={setNodeRef} className='bg-slate-200 border-2 border-gray-500'>
-			{activeSeatThatIsOverThisTile.length == 1 && (
-				<Seat
-					key={activeSeatThatIsOverThisTile[0]?.activeSeat.id}
-					id={activeSeatThatIsOverThisTile[0]?.activeSeat.id}
-					label={activeSeatThatIsOverThisTile[0]?.activeSeat.label}
-				/>
-			)}
+			{pathname == "/administration"
+				? activeSeatThatIsOverThisTile &&
+				  activeSeatThatIsOverThisTile.length == 1 && (
+						<Seat
+							key={activeSeatThatIsOverThisTile[0]?.activeSeat.id}
+							id={activeSeatThatIsOverThisTile[0]?.activeSeat.id}
+							label={activeSeatThatIsOverThisTile[0]?.activeSeat.label}
+						/>
+				  )
+				: seatingPlan?.activeSeats.map((activeSeat) => {
+						if (activeSeat.overId === id) {
+							return (
+								<Seat
+									key={activeSeat.activeSeat.id}
+									id={activeSeat.activeSeat.id}
+									label={activeSeat.activeSeat.label}
+									setSelectedSeats={setSelectedSeats}
+								/>
+							)
+						}
+				  })}
 		</div>
 	)
 }

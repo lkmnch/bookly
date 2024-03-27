@@ -1,13 +1,37 @@
-import React, { useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover"
 import { Button } from "./ui/button"
 import { ClockIcon } from "@radix-ui/react-icons"
 import { Input } from "./ui/input"
 import { cn } from "@/lib/utils"
 import { setHours, format, setMinutes } from "date-fns"
+import { AppContext } from "@/app/context/AppProvider"
+import { RestaurantContextType } from "@/lib/types/restaurant"
 
 function TimePicker() {
 	const [time, setTime] = useState<Date>()
+	const { dateTime, setDateTime } = useContext(
+		AppContext
+	) as RestaurantContextType
+
+	useEffect(() => {
+		if (time) {
+			setDateTime((previousDateTime: Date) => {
+				const dateTimeWithUpdatedHours = setHours(
+					previousDateTime,
+					time.getHours()
+				)
+				const dateTimeWithUpdatedMinutes = setMinutes(
+					dateTimeWithUpdatedHours,
+					time.getMinutes()
+				)
+				return dateTimeWithUpdatedMinutes
+			})
+		}
+	}, [time])
+	useEffect(() => {
+		console.log(dateTime)
+	}, [dateTime])
 	return (
 		<Popover>
 			<PopoverTrigger asChild>

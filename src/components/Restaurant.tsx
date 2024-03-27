@@ -14,9 +14,8 @@ import { useContext } from "react"
 import { AppContext } from "../app/context/AppProvider"
 
 function Restaurant({ id, name, description, average_rating }: IRestaurant) {
-	const { setCurrentId } = useContext(AppContext) as RestaurantContextType
 	return (
-		<Card className=' hover:bg-slate-50' onClick={() => setCurrentId(id)}>
+		<Card className=' hover:bg-slate-50'>
 			<Link href={`/restaurants/${id}`} className='flex'>
 				<div>
 					<img

@@ -1,4 +1,4 @@
-import * as React from "react"
+import { useState, useContext, useEffect } from "react"
 import { CalendarIcon } from "@radix-ui/react-icons"
 import { addDays, format } from "date-fns"
 
@@ -17,10 +17,24 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select"
+import { AppContext } from "@/app/context/AppProvider"
+import { RestaurantContextType } from "@/lib/types/restaurant"
 
 function DatePicker() {
-	const [date, setDate] = React.useState<Date>()
+	const { setDateTime, dateTime } = useContext(
+		AppContext
+	) as RestaurantContextType
+	const [date, setDate] = useState<Date>()
 
+	useEffect(() => {
+		setDateTime(date)
+	}, [date])
+
+	useEffect(() => {
+		if (dateTime) {
+			console.log(dateTime)
+		}
+	}, [dateTime])
 	return (
 		<Popover>
 			<PopoverTrigger asChild>

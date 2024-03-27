@@ -7,12 +7,11 @@ export interface IRestaurant {
 
 export type RestaurantContextType = {
 	restaurants: IRestaurant[]
-	seatingPlan: seatingPlanType | undefined
+	currentId: number
+	setCurrentId: React.Dispatch<React.SetStateAction<number>>
 	setSeatingPlan: React.Dispatch<
 		React.SetStateAction<seatingPlanType | undefined>
 	>
-	setDateTime: Dispatch<SetStateAction<Date | undefined>>
-	dateTime: Date | undefined
 }
 
 export interface IMenuItem {
@@ -40,11 +39,4 @@ export type activeSeatType = {
 export type seatingPlanType = {
 	activeSeats: activeSeatType[]
 	restaurantId?: number
-}
-
-export type bookingType = {
-	customerId: number
-	restaurantId: number
-	bookedSeats: activeSeatType[]
-	dateTime: Date
 }
