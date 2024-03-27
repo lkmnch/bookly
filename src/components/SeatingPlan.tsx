@@ -1,5 +1,5 @@
 "use client"
-import { useState, useContext } from "react"
+import { useState, useContext, useEffect } from "react"
 import { Active, DndContext, DragEndEvent, Over } from "@dnd-kit/core"
 import Canvas from "./Canvas"
 import Seat from "./Seat"
@@ -10,6 +10,7 @@ import {
 } from "@/lib/types/restaurant"
 import RemoveSeat from "./RemoveSeat"
 import { AppContext } from "@/app/context/AppProvider"
+import { Button } from "./ui/button"
 
 function SeatingPlan() {
 	const { setSeatingPlan } = useContext(AppContext) as RestaurantContextType
@@ -18,6 +19,13 @@ function SeatingPlan() {
 	const [activeSeats, setActiveSeats] = useState<activeSeatType[]>([])
 	const [nextSeatId, setNextSeatId] = useState(1)
 
+	useEffect(() => {
+		const userData = localStorage.getItem("savedSeats")
+		if (userData) {
+			setActiveSeats(JSON.parse(userData))
+		}
+	}, [])
+
 	const addSeat = () => {
 		const newSeat = { id: nextSeatId, label: `S ${nextSeatId}` }
 		setSeats([...seats, newSeat])
@@ -25,6 +33,8 @@ function SeatingPlan() {
 	}
 	const saveSeats = () => {
 		setSeatingPlan({ activeSeats })
+		localStorage.setItem("savedSeats", JSON.stringify(activeSeats))
+		localStorage.setItem("seatingPlan", JSON.stringify({ activeSeats }))
 	}
 
 	const updateActiveSeats = (
@@ -94,25 +104,17 @@ function SeatingPlan() {
 
 	return (
 		<DndContext onDragEnd={handleDragEnd}>
-			<div className='flex'>
-				<div>
-					<button
-						className='bg-blue-500 text-white px-4 py-2 rounded mb-4'
-						onClick={addSeat}>
-						Add Seat
-					</button>
+			<div className='flex gap-2'>
+				<div className='ml-4 flex gap-1 flex-wrap '>
+					<Canvas activeSeats={activeSeats} />
+				</div>
+				<div className='flex flex-col gap-4'>
+					<Button onClick={addSeat}>Sitz hinzufügen</Button>
 					<RemoveSeat />
-					<button
-						className='bg-green-500 text-white px-4 py-2 rounded mb-4'
-						onClick={saveSeats}>
-						Save Seating Plan
-					</button>
+					<Button onClick={saveSeats}>Sitzplan speichern</Button>
 					{seats.map((seat) => (
 						<Seat key={seat.id} id={seat.id} label={seat.label} />
 					))}
-				</div>
-				<div className='ml-4 flex gap-1 flex-wrap '>
-					<Canvas activeSeats={activeSeats} />
 				</div>
 			</div>
 		</DndContext>

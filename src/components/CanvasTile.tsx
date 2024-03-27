@@ -2,7 +2,11 @@
 import { useDroppable } from "@dnd-kit/core"
 
 import Seat from "./Seat"
-import { RestaurantContextType, activeSeatType } from "@/lib/types/restaurant"
+import {
+	RestaurantContextType,
+	activeSeatType,
+	seatingPlanType,
+} from "@/lib/types/restaurant"
 import { useContext, useEffect, useState } from "react"
 import { AppContext } from "@/app/context/AppProvider"
 import { usePathname } from "next/navigation"
@@ -22,7 +26,15 @@ function CanvasTile({
 	const [activeSeatThatIsOverThisTile, setActiveSeatThatIsOverThisTile] =
 		useState<activeSeatType[]>()
 
-	const { seatingPlan } = useContext(AppContext) as RestaurantContextType
+	//const { seatingPlan } = useContext(AppContext) as RestaurantContextType
+	const [seatingPlan, setSeatingPlan] = useState<seatingPlanType>()
+	useEffect(() => {
+		const data = localStorage.getItem("seatingPlan")
+		if (data) {
+			setSeatingPlan(JSON.parse(data))
+		}
+	}, [])
+
 	const pathname = usePathname()
 	useEffect(() => {
 		if (activeSeats) {
@@ -33,8 +45,8 @@ function CanvasTile({
 	}, [JSON.stringify(activeSeats)])
 
 	return (
-		<div ref={setNodeRef} className='bg-slate-200 border-2 border-gray-500'>
-			{pathname == "/administration"
+		<div ref={setNodeRef} className='bg-none border-0 border-gray-400'>
+			{pathname == "/administration/seatingplan"
 				? activeSeatThatIsOverThisTile &&
 				  activeSeatThatIsOverThisTile.length == 1 && (
 						<Seat

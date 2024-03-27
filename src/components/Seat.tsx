@@ -1,6 +1,7 @@
 import { useDraggable } from "@dnd-kit/core"
 import { SeatType } from "@/lib/types/restaurant"
 import { useState } from "react"
+import { Armchair } from "lucide-react"
 
 type SeatProps = {
 	id: number
@@ -37,11 +38,10 @@ const Seat = ({ id, label, setSelectedSeats }: SeatProps) => {
 			style={style}
 			{...listeners}
 			{...attributes}
-			className={
-				!isSelected
-					? "bg-orange-300  rounded cursor-move h-10 w-10"
-					: "bg-orange-700  rounded cursor-move h-10 w-10"
-			}>
+			className={`${
+				!isSelected ? "bg-orange-300" : "bg-orange-700"
+			} rounded cursor-move h-10 w-10 text-xs flex flex-col items-center justify-center`}>
+			<Armchair />
 			{label}
 		</div>
 	)

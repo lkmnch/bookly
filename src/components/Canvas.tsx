@@ -9,7 +9,9 @@ interface CanvasProps {
 
 const Canvas: React.FC<CanvasProps> = ({ activeSeats, setSelectedSeats }) => {
 	return (
-		<div className='bg-gray-100 rounded h-[1000px] w-[1000px] grid grid-cols-25 grid-rows-25 '>
+		<div
+			className='bg-cover rounded h-[500px] w-[500px] md:h-[700px] md:w-[700px]  grid grid-cols-25 grid-rows-25'
+			style={{ backgroundImage: `url(/floorplan2.png)` }}>
 			{[...Array(625)].map((_, index) => (
 				<CanvasTile
 					key={index}
