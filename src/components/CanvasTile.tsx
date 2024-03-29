@@ -12,10 +12,12 @@ import { AppContext } from "@/app/context/AppProvider"
 import { usePathname } from "next/navigation"
 
 function CanvasTile({
+	navigationId,
 	id,
 	activeSeats,
 	setSelectedSeats,
 }: {
+	navigationId: string
 	id: number
 	activeSeats?: activeSeatType[]
 	setSelectedSeats?: React.Dispatch<React.SetStateAction<number>>
@@ -46,7 +48,7 @@ function CanvasTile({
 
 	return (
 		<div ref={setNodeRef} className='bg-none border-0 border-gray-400'>
-			{pathname == "/administration/seatingplan"
+			{pathname == `/administration/${navigationId}/editSeatingplan`
 				? activeSeatThatIsOverThisTile &&
 				  activeSeatThatIsOverThisTile.length == 1 && (
 						<Seat

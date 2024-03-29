@@ -1,12 +1,14 @@
-export interface IRestaurant {
-	id: number
+export type RestaurantType = {
+	id: string
 	name: string
 	description: string
-	average_rating: number
+	average_rating?: number
+}
+export type restaurantDataType = {
+	[id: string]: { restaurantName: string; restaurantDescription: string }
 }
 
 export type RestaurantContextType = {
-	restaurants: IRestaurant[]
 	seatingPlan: seatingPlanType | undefined
 	setSeatingPlan: React.Dispatch<
 		React.SetStateAction<seatingPlanType | undefined>

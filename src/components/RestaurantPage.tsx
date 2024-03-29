@@ -1,20 +1,38 @@
 "use client"
-import React, { useContext, useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { Button } from "./ui/button"
 import Rating from "./Rating"
 import { AppContext } from "../app/context/AppProvider"
-import { RestaurantContextType, bookingType } from "@/lib/types/restaurant"
+import {
+	RestaurantContextType,
+	bookingType,
+	restaurantDataType,
+} from "@/lib/types/restaurant"
 import DatePicker from "./DatePicker"
 import TimePicker from "./TimePicker"
 import RestaurantMenu from "./RestaurantMenu"
 import { useRouter } from "next/navigation"
 
-function RestaurantInfoCard({ id }: { id: number }) {
-	const { restaurants, dateTime } = useContext(
-		AppContext
-	) as RestaurantContextType
+type restaurantData = {
+	restaurantName: string
+	restaurantDescription: string
+}
+function RestaurantPage({ id }: { id: string }) {
+	const { dateTime } = useContext(AppContext) as RestaurantContextType
 	const [bookings, setBookings] = useState<bookingType[]>()
+	const [restaurant, setRestaurant] = useState<restaurantData>()
+
 	const router = useRouter()
+
+	useEffect(() => {
+		const data = localStorage.getItem("restaurants")
+		if (data) {
+			const parsedData = JSON.parse(data)
+			const restaurant = parsedData[id]
+			setRestaurant(restaurant)
+		}
+	}, [])
+
 	const checkAvailabilty = () => {
 		console.log(bookings?.filter((booking) => dateTime !== booking.dateTime))
 		if (bookings) {
@@ -31,9 +49,9 @@ function RestaurantInfoCard({ id }: { id: number }) {
 			<div>
 				<img id='CardImage' src='/placeholder-image.png' />
 			</div>
-			<h1 className='text-2xl'>{restaurants[id].name}</h1>
-			<Rating rating={restaurants[id].average_rating} />
-			{restaurants[id].description}
+			<h1 className='text-2xl'>{restaurant?.restaurantName}</h1>
+			{/* <Rating rating={restaurants[id].average_rating} /> */}
+			{restaurant?.restaurantDescription}
 			<div className='flex gap-4'>
 				<DatePicker />
 				<TimePicker />
@@ -46,4 +64,4 @@ function RestaurantInfoCard({ id }: { id: number }) {
 	)
 }
 
-export default RestaurantInfoCard
+export default RestaurantPage

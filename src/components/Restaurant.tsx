@@ -9,11 +9,9 @@ import {
 
 import Rating from "./Rating"
 import Link from "next/link"
-import { IRestaurant, RestaurantContextType } from "../lib/types/restaurant"
-import { useContext } from "react"
-import { AppContext } from "../app/context/AppProvider"
+import { RestaurantType, RestaurantContextType } from "../lib/types/restaurant"
 
-function Restaurant({ id, name, description, average_rating }: IRestaurant) {
+function Restaurant({ id, name, description, average_rating }: RestaurantType) {
 	return (
 		<Card className=' hover:bg-slate-50'>
 			<Link href={`/restaurants/${id}`} className='flex'>
@@ -29,9 +27,7 @@ function Restaurant({ id, name, description, average_rating }: IRestaurant) {
 						<CardTitle>{name}</CardTitle>
 						<CardDescription>{description}</CardDescription>
 					</CardHeader>
-					<CardContent>
-						<Rating rating={average_rating} />
-					</CardContent>
+					<CardContent>{/* <Rating rating={average_rating} /> */}</CardContent>
 				</div>
 			</Link>
 		</Card>

@@ -12,7 +12,7 @@ import RemoveSeat from "./RemoveSeat"
 import { AppContext } from "@/app/context/AppProvider"
 import { Button } from "./ui/button"
 
-function SeatingPlan() {
+function SeatingPlan({ id }: { id: string }) {
 	const { setSeatingPlan } = useContext(AppContext) as RestaurantContextType
 	const [seats, setSeats] = useState<SeatType[]>([])
 	const [draggedSeats, setDraggedSeats] = useState<SeatType[]>([])
@@ -31,7 +31,8 @@ function SeatingPlan() {
 		setSeats([...seats, newSeat])
 		setNextSeatId(nextSeatId + 1)
 	}
-	const saveSeats = () => {
+
+	const saveSeatingplan = () => {
 		setSeatingPlan({ activeSeats })
 		localStorage.setItem("savedSeats", JSON.stringify(activeSeats))
 		localStorage.setItem("seatingPlan", JSON.stringify({ activeSeats }))
@@ -106,15 +107,16 @@ function SeatingPlan() {
 		<DndContext onDragEnd={handleDragEnd}>
 			<div className='flex gap-2'>
 				<div className='ml-4 flex gap-1 flex-wrap '>
-					<Canvas activeSeats={activeSeats} />
+					<Canvas activeSeats={activeSeats} id={id} />
 				</div>
 				<div className='flex flex-col gap-4'>
 					<Button onClick={addSeat}>Sitz hinzufügen</Button>
 					<RemoveSeat />
-					<Button onClick={saveSeats}>Sitzplan speichern</Button>
+					<Button onClick={saveSeatingplan}>Sitzplan speichern</Button>
 					{seats.map((seat) => (
 						<Seat key={seat.id} id={seat.id} label={seat.label} />
 					))}
+					<Button>Sitzplan löschen</Button>
 				</div>
 			</div>
 		</DndContext>
