@@ -31,7 +31,9 @@ function Administration() {
 				{restaurants &&
 					Object.entries(restaurants).map((restaurant) => (
 						<Link key={restaurant[0]} href={`/administration/${restaurant[0]}`}>
-							<Button variant={"outline"} className='w-60 h-60 text-4xl'>
+							<Button
+								variant={"outline"}
+								className='w-60 h-60 text-4xl text-wrap '>
 								<span>{restaurant[1].restaurantName}</span>
 							</Button>
 						</Link>

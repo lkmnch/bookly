@@ -9,10 +9,6 @@ export type restaurantDataType = {
 }
 
 export type RestaurantContextType = {
-	seatingPlan: seatingPlanType | undefined
-	setSeatingPlan: React.Dispatch<
-		React.SetStateAction<seatingPlanType | undefined>
-	>
 	setDateTime: Dispatch<SetStateAction<Date | undefined>>
 	dateTime: Date | undefined
 }
@@ -37,11 +33,6 @@ export type SeatType = {
 export type activeSeatType = {
 	activeSeat: SeatType
 	overId: number
-}
-
-export type seatingPlanType = {
-	activeSeats: activeSeatType[]
-	restaurantId?: number
 }
 
 export type bookingType = {

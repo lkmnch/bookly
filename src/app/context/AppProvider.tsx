@@ -10,13 +10,10 @@ import {
 export const AppContext = createContext<RestaurantContextType | null>(null)
 
 export const AppProvider = ({ children }: { children: React.ReactNode }) => {
-	const [seatingPlan, setSeatingPlan] = useState<seatingPlanType>()
 	const [dateTime, setDateTime] = useState<Date>()
 	return (
 		<AppContext.Provider
 			value={{
-				seatingPlan: seatingPlan,
-				setSeatingPlan: setSeatingPlan,
 				setDateTime: setDateTime,
 				dateTime: dateTime,
 			}}>

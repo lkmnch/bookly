@@ -1,15 +1,10 @@
 "use client"
+import { activeSeatType } from "@/lib/types/restaurant"
+import { useEffect, useState } from "react"
+import { usePathname } from "next/navigation"
 import { useDroppable } from "@dnd-kit/core"
 
 import Seat from "./Seat"
-import {
-	RestaurantContextType,
-	activeSeatType,
-	seatingPlanType,
-} from "@/lib/types/restaurant"
-import { useContext, useEffect, useState } from "react"
-import { AppContext } from "@/app/context/AppProvider"
-import { usePathname } from "next/navigation"
 
 function CanvasTile({
 	navigationId,
@@ -28,12 +23,18 @@ function CanvasTile({
 	const [activeSeatThatIsOverThisTile, setActiveSeatThatIsOverThisTile] =
 		useState<activeSeatType[]>()
 
-	//const { seatingPlan } = useContext(AppContext) as RestaurantContextType
-	const [seatingPlan, setSeatingPlan] = useState<seatingPlanType>()
+	const [seatingPlan, setSeatingPlan] = useState<activeSeatType[]>()
 	useEffect(() => {
-		const data = localStorage.getItem("seatingPlan")
+		const data = localStorage.getItem("restaurants")
+
 		if (data) {
-			setSeatingPlan(JSON.parse(data))
+			const parsedData = JSON.parse(data)
+			if (parsedData[navigationId]) {
+				const restaurant = parsedData[navigationId]
+				if (restaurant.seatingPlan) {
+					setSeatingPlan(restaurant.seatingPlan)
+				}
+			}
 		}
 	}, [])
 
@@ -57,7 +58,7 @@ function CanvasTile({
 							label={activeSeatThatIsOverThisTile[0]?.activeSeat.label}
 						/>
 				  )
-				: seatingPlan?.activeSeats.map((activeSeat) => {
+				: seatingPlan?.map((activeSeat) => {
 						if (activeSeat.overId === id) {
 							return (
 								<Seat

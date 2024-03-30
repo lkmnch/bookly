@@ -17,8 +17,10 @@ import {
 } from "@/components/ui/form"
 import { Textarea } from "@/components/ui/textarea"
 import { restaurantDataType } from "@/lib/types/restaurant"
+import { useRouter } from "next/navigation"
 
 function page() {
+	const router = useRouter()
 	const formSchema = z.object({
 		restaurantName: z
 			.string()
@@ -34,22 +36,22 @@ function page() {
 		},
 	})
 	const onSubmit = (values: z.infer<typeof formSchema>) => {
-		const id = 0
 		const data = localStorage.getItem("restaurants")
 		if (data) {
 			const parsedData = JSON.parse(data)
-			console.log("🚀 ~ onSubmit ~ parsedData:", parsedData)
-			const newId = id + 1
-			const newData = { ...parsedData, [newId]: { ...values } }
+			const keys = Object.keys(parsedData)
+			const lastkey = Number(keys[keys.length - 1])
+			const newData = { ...parsedData, [lastkey + 1]: { ...values } }
 			try {
 				localStorage.setItem("restaurants", JSON.stringify(newData))
+				router.push("/administration")
 			} catch (error) {
 				console.log(error)
 			}
 		} else {
-			const data: restaurantDataType = { [id]: { ...values } }
-
+			const data: restaurantDataType = { [0]: { ...values } }
 			localStorage.setItem("restaurants", JSON.stringify(data))
+			router.push("/administration")
 		}
 	}
 
@@ -94,6 +96,7 @@ function page() {
 						</FormItem>
 					)}
 				/>
+
 				<Button type='submit'>Restaurant anlegen</Button>
 			</form>
 		</Form>

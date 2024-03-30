@@ -12,17 +12,30 @@ import RemoveSeat from "./RemoveSeat"
 import { AppContext } from "@/app/context/AppProvider"
 import { Button } from "./ui/button"
 
+type restaurantSeatingPlanType = {
+	[id: string]: {
+		restaurantName: string
+		restaurantDescription: string
+		seatingplan: activeSeatType
+	}
+}
 function SeatingPlan({ id }: { id: string }) {
-	const { setSeatingPlan } = useContext(AppContext) as RestaurantContextType
 	const [seats, setSeats] = useState<SeatType[]>([])
 	const [draggedSeats, setDraggedSeats] = useState<SeatType[]>([])
 	const [activeSeats, setActiveSeats] = useState<activeSeatType[]>([])
 	const [nextSeatId, setNextSeatId] = useState(1)
 
 	useEffect(() => {
-		const userData = localStorage.getItem("savedSeats")
+		const userData = localStorage.getItem("restaurants")
+
 		if (userData) {
-			setActiveSeats(JSON.parse(userData))
+			const parsedData = JSON.parse(userData)
+			if (parsedData[id].seatingPlan) {
+				const seatingPlan = parsedData[id].seatingPlan
+				if (seatingPlan) {
+					setActiveSeats(seatingPlan)
+				}
+			}
 		}
 	}, [])
 
@@ -33,9 +46,20 @@ function SeatingPlan({ id }: { id: string }) {
 	}
 
 	const saveSeatingplan = () => {
-		setSeatingPlan({ activeSeats })
-		localStorage.setItem("savedSeats", JSON.stringify(activeSeats))
-		localStorage.setItem("seatingPlan", JSON.stringify({ activeSeats }))
+		const data = localStorage.getItem("restaurants")
+		if (data) {
+			const parsedData = JSON.parse(data)
+			const updatedRestaurant = {
+				...parsedData[id],
+				seatingPlan: activeSeats,
+			}
+
+			const updatedRestaurants = {
+				...parsedData,
+				[id]: updatedRestaurant,
+			}
+			localStorage.setItem("restaurants", JSON.stringify(updatedRestaurants))
+		}
 	}
 
 	const updateActiveSeats = (
