@@ -5,18 +5,18 @@ import { usePathname } from "next/navigation"
 import { useDroppable } from "@dnd-kit/core"
 
 import Seat from "./Seat"
-
+type CanvasTileProps = {
+	navigationId: string
+	id: number
+	activeSeats?: activeSeatType[]
+	setSelectedSeats?: React.Dispatch<React.SetStateAction<activeSeatType[]>>
+}
 function CanvasTile({
 	navigationId,
 	id,
 	activeSeats,
 	setSelectedSeats,
-}: {
-	navigationId: string
-	id: number
-	activeSeats?: activeSeatType[]
-	setSelectedSeats?: React.Dispatch<React.SetStateAction<number>>
-}) {
+}: CanvasTileProps) {
 	const { setNodeRef } = useDroppable({
 		id: id,
 	})
@@ -24,9 +24,11 @@ function CanvasTile({
 		useState<activeSeatType[]>()
 
 	const [seatingPlan, setSeatingPlan] = useState<activeSeatType[]>()
+
+	const pathname = usePathname()
+
 	useEffect(() => {
 		const data = localStorage.getItem("restaurants")
-
 		if (data) {
 			const parsedData = JSON.parse(data)
 			if (parsedData[navigationId]) {
@@ -38,7 +40,6 @@ function CanvasTile({
 		}
 	}, [])
 
-	const pathname = usePathname()
 	useEffect(() => {
 		if (activeSeats) {
 			setActiveSeatThatIsOverThisTile(
@@ -56,6 +57,7 @@ function CanvasTile({
 							key={activeSeatThatIsOverThisTile[0]?.activeSeat.id}
 							id={activeSeatThatIsOverThisTile[0]?.activeSeat.id}
 							label={activeSeatThatIsOverThisTile[0]?.activeSeat.label}
+							overId={activeSeatThatIsOverThisTile[0]?.overId} //weg?
 						/>
 				  )
 				: seatingPlan?.map((activeSeat) => {
@@ -66,6 +68,7 @@ function CanvasTile({
 									id={activeSeat.activeSeat.id}
 									label={activeSeat.activeSeat.label}
 									setSelectedSeats={setSelectedSeats}
+									overId={activeSeat.overId}
 								/>
 							)
 						}

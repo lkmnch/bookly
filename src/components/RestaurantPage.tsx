@@ -56,7 +56,7 @@ function RestaurantPage({ id }: { id: string }) {
 				<DatePicker />
 				<TimePicker />
 				<Button onClick={checkAvailabilty}>
-					<span>Buchen</span>
+					<span>Verfügbarkeit prüfen</span>
 				</Button>
 			</div>
 			<RestaurantMenu />

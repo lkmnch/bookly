@@ -1,15 +1,16 @@
 import { useDraggable } from "@dnd-kit/core"
-import { SeatType } from "@/lib/types/restaurant"
+import { SeatType, activeSeatType } from "@/lib/types/restaurant"
 import { useState } from "react"
 import { Armchair } from "lucide-react"
 
 type SeatProps = {
 	id: number
 	label: string
-	setSelectedSeats?: React.Dispatch<React.SetStateAction<number>>
+	setSelectedSeats?: React.Dispatch<React.SetStateAction<activeSeatType[]>>
+	overId?: number
 }
 
-const Seat = ({ id, label, setSelectedSeats }: SeatProps) => {
+const Seat = ({ id, label, setSelectedSeats, overId }: SeatProps) => {
 	const [isSelected, setIsSelected] = useState(false)
 	const { attributes, listeners, setNodeRef, transform } = useDraggable({
 		id,
@@ -24,10 +25,20 @@ const Seat = ({ id, label, setSelectedSeats }: SeatProps) => {
 	const handleClick = () => {
 		if (isSelected) {
 			setIsSelected(false)
-			setSelectedSeats?.((prevSelectedSeats) => prevSelectedSeats - 1)
+
+			setSelectedSeats?.((prevSelectedSeats) => {
+				return prevSelectedSeats.filter(
+					(prevSelectedSeat) => prevSelectedSeat.activeSeat.id !== id
+				)
+			})
 		} else {
 			setIsSelected(true)
-			setSelectedSeats?.((prevSelectedSeats) => prevSelectedSeats + 1)
+			if (overId) {
+				setSelectedSeats?.((prevSelectedSeats) => [
+					...prevSelectedSeats,
+					{ activeSeat: { id, label }, overId },
+				])
+			}
 		}
 	}
 

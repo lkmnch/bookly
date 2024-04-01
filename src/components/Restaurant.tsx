@@ -13,13 +13,14 @@ import { RestaurantType, RestaurantContextType } from "../lib/types/restaurant"
 
 function Restaurant({ id, name, description, average_rating }: RestaurantType) {
 	return (
-		<Card className=' hover:bg-slate-50'>
+		<Card className=' hover:bg-slate-50 w-full'>
 			<Link href={`/restaurants/${id}`} className='flex'>
 				<div>
 					<img
 						id='CardImage'
 						src={`/placeholder-image.png`}
 						alt='Image of Restaurant'
+						className='w-64'
 					/>
 				</div>
 				<div>
@@ -27,7 +28,9 @@ function Restaurant({ id, name, description, average_rating }: RestaurantType) {
 						<CardTitle>{name}</CardTitle>
 						<CardDescription>{description}</CardDescription>
 					</CardHeader>
-					<CardContent>{/* <Rating rating={average_rating} /> */}</CardContent>
+					<CardContent>
+						<Rating rating={4} />{" "}
+					</CardContent>
 				</div>
 			</Link>
 		</Card>

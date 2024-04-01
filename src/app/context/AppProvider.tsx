@@ -1,11 +1,7 @@
 "use client"
 
 import { createContext, useState } from "react"
-import {
-	RestaurantType,
-	RestaurantContextType,
-	seatingPlanType,
-} from "../../lib/types/restaurant"
+import { RestaurantContextType } from "../../lib/types/restaurant"
 
 export const AppContext = createContext<RestaurantContextType | null>(null)
 

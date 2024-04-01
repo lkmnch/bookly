@@ -5,7 +5,7 @@ import { activeSeatType } from "@/lib/types/restaurant"
 interface CanvasProps {
 	id: string
 	activeSeats?: activeSeatType[]
-	setSelectedSeats?: React.Dispatch<React.SetStateAction<number>>
+	setSelectedSeats?: React.Dispatch<React.SetStateAction<activeSeatType[]>>
 }
 
 const Canvas: React.FC<CanvasProps> = ({
