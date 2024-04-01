@@ -36,8 +36,11 @@ export type activeSeatType = {
 }
 
 export type bookingType = {
-	customerId: number
-	restaurantId: number
-	bookedSeats: activeSeatType[]
 	dateTime: Date
+	bookedSeats: activeSeatType[]
+	firstName: string
+	lastName: string
+	email: string
+	phoneNumber: string
+	specialRequirements?: string | undefined
 }

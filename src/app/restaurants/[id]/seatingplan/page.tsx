@@ -3,7 +3,11 @@ import { AppContext } from "@/app/context/AppProvider"
 import Canvas from "@/components/Canvas"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { RestaurantContextType, activeSeatType } from "@/lib/types/restaurant"
+import {
+	RestaurantContextType,
+	activeSeatType,
+	bookingType,
+} from "@/lib/types/restaurant"
 import React, { useContext, useState } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
@@ -18,10 +22,12 @@ import {
 	FormMessage,
 } from "@/components/ui/form"
 import { Textarea } from "@/components/ui/textarea"
+import { useRouter } from "next/navigation"
 
 function page({ params }: { params: { id: string } }) {
 	const [selectedSeats, setSelectedSeats] = useState<activeSeatType[]>([])
 	const { dateTime } = useContext(AppContext) as RestaurantContextType
+	const router = useRouter()
 
 	const formSchema = z.object({
 		firstName: z.string().min(1, { message: "Please enter your first name" }),
@@ -45,24 +51,29 @@ function page({ params }: { params: { id: string } }) {
 	})
 
 	const onSubmit = (values: z.infer<typeof formSchema>) => {
-		console.log("🚀 ~ onSubmit ~ values:", values)
-		/* const data = localStorage.getItem("restaurants")
+		const data = localStorage.getItem("restaurants")
 		if (data) {
 			const parsedData = JSON.parse(data)
-			const keys = Object.keys(parsedData)
-			const lastkey = Number(keys[keys.length - 1])
-			const newData = { ...parsedData, [lastkey + 1]: { ...values } }
-			try {
-				localStorage.setItem("restaurants", JSON.stringify(newData))
-				router.push("/administration")
-			} catch (error) {
-				console.log(error)
+			const restaurant = parsedData[params.id]
+			if (dateTime) {
+				const bookings: bookingType[] = [
+					...restaurant.bookings,
+					{ dateTime, bookedSeats: selectedSeats, ...values },
+				]
+				try {
+					localStorage.setItem(
+						"restaurants",
+						JSON.stringify({
+							...parsedData,
+							[params.id]: { ...restaurant, bookings },
+						})
+					)
+					router.push("/")
+				} catch (error) {
+					console.log("Konnte Buchung nicht erstellen")
+				}
 			}
-		} else {
-			const data: restaurantDataType = { [0]: { ...values } }
-			localStorage.setItem("restaurants", JSON.stringify(data))
-			router.push("/administration")
-		} */
+		}
 	}
 	return (
 		<div className='flex flex-wrap gap-10 md:flex-nowrap'>
