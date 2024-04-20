@@ -5,31 +5,33 @@ import Canvas from "./Canvas"
 import Seat from "./Seat"
 import {
 	RestaurantContextType,
+	RestaurantType,
 	SeatType,
 	activeSeatType,
+	restaurantDataType,
 } from "@/lib/types/restaurant"
 import RemoveSeat from "./RemoveSeat"
 import { AppContext } from "@/app/context/AppProvider"
 import { Button } from "./ui/button"
+import { useToast } from "@/components/ui/use-toast"
+import { Toast } from "./ui/toast"
+import { Toaster } from "./ui/toaster"
+import { Plus, Save, Trash2 } from "lucide-react"
 
-type restaurantSeatingPlanType = {
-	[id: string]: {
-		restaurantName: string
-		restaurantDescription: string
-		seatingplan: activeSeatType
-	}
-}
 function SeatingPlan({ id }: { id: string }) {
 	const [seats, setSeats] = useState<SeatType[]>([])
+	const [restaurant, setRestaurant] = useState<any>()
 	const [draggedSeats, setDraggedSeats] = useState<SeatType[]>([])
 	const [activeSeats, setActiveSeats] = useState<activeSeatType[]>([])
 	const [nextSeatId, setNextSeatId] = useState(1)
-
+	const { toast } = useToast()
 	useEffect(() => {
 		const userData = localStorage.getItem("restaurants")
 
 		if (userData) {
 			const parsedData = JSON.parse(userData)
+			console.log(parsedData[id])
+			setRestaurant(parsedData[id])
 			if (parsedData[id].seatingPlan) {
 				const seatingPlan = parsedData[id].seatingPlan
 				if (seatingPlan) {
@@ -48,17 +50,31 @@ function SeatingPlan({ id }: { id: string }) {
 	const saveSeatingplan = () => {
 		const data = localStorage.getItem("restaurants")
 		if (data) {
-			const parsedData = JSON.parse(data)
-			const updatedRestaurant = {
-				...parsedData[id],
-				seatingPlan: activeSeats,
-			}
+			try {
+				const parsedData = JSON.parse(data)
+				const updatedRestaurant = {
+					...parsedData[id],
+					seatingPlan: activeSeats,
+				}
 
-			const updatedRestaurants = {
-				...parsedData,
-				[id]: updatedRestaurant,
+				const updatedRestaurants = {
+					...parsedData,
+					[id]: updatedRestaurant,
+				}
+				localStorage.setItem("restaurants", JSON.stringify(updatedRestaurants))
+				console.log("gespeichert")
+				toast({
+					title: "Sitzplan gespeichert",
+					description: "Der Sitzplan wurde gespeichert",
+				})
+			} catch (error) {
+				console.log("🚀 ~ saveSeatingplan ~ error:", error)
+				toast({
+					variant: "destructive",
+					title: "Sitzplan gespeichert",
+					description: "Der Sitzplan wurde nicht gespeichert",
+				})
 			}
-			localStorage.setItem("restaurants", JSON.stringify(updatedRestaurants))
 		}
 	}
 
@@ -129,20 +145,43 @@ function SeatingPlan({ id }: { id: string }) {
 
 	return (
 		<DndContext onDragEnd={handleDragEnd}>
-			<div className='flex gap-2'>
+			<div className='flex justify-between'>
+				{restaurant && (
+					<h1 className='text-4xl font-bold'>
+						Sitzplan für {restaurant?.restaurantName}{" "}
+					</h1>
+				)}
+				<div className='flex gap-2'>
+					<Button onClick={saveSeatingplan}>
+						{" "}
+						<Save /> Sitzplan speichern
+					</Button>
+					<Button>
+						{" "}
+						<Trash2 /> Sitzplan löschen
+					</Button>
+				</div>
+			</div>
+
+			<div className='flex justify-between'>
 				<div className='ml-4 flex gap-1 flex-wrap '>
 					<Canvas activeSeats={activeSeats} id={id} />
 				</div>
 				<div className='flex flex-col gap-4'>
-					<Button onClick={addSeat}>Sitz hinzufügen</Button>
+					<Button onClick={addSeat}>
+						{" "}
+						<Plus /> Sitz hinzufügen
+					</Button>
+
+					<div className='bg-slate-500 w-80 h-96 rounded-md flex flex-wrap'>
+						{seats.map((seat) => (
+							<Seat key={seat.id} id={seat.id} label={seat.label} />
+						))}
+					</div>
 					<RemoveSeat />
-					<Button onClick={saveSeatingplan}>Sitzplan speichern</Button>
-					{seats.map((seat) => (
-						<Seat key={seat.id} id={seat.id} label={seat.label} />
-					))}
-					<Button>Sitzplan löschen</Button>
 				</div>
 			</div>
+			<Toaster />
 		</DndContext>
 	)
 }

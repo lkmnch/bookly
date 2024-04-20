@@ -2,10 +2,17 @@ export type RestaurantType = {
 	id: string
 	name: string
 	description: string
+	restaurantImage: string
 	average_rating?: number
 }
 export type restaurantDataType = {
-	[id: string]: { restaurantName: string; restaurantDescription: string }
+	[id: string]: {
+		restaurantName: string
+		restaurantDescription: string
+		restaurantThumbnail: string
+		seatingplan: activeSeatType[]
+		bookings: bookingType[]
+	}
 }
 
 export type RestaurantContextType = {

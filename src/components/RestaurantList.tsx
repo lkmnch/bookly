@@ -16,20 +16,19 @@ function RestaurantList() {
 	}, [])
 
 	return (
-		<div className='flex gap-4'>
-			<h2 className='text-2xl font-bold'>Filter</h2>
-			<div className='flex flex-col gap-4'>
-				{restaurants &&
-					Object.entries(restaurants).map((restaurant) => (
-						<Restaurant
-							key={restaurant[0]}
-							id={restaurant[0]}
-							name={restaurant[1].restaurantName}
-							description={restaurant[1].restaurantDescription}
-							// average_rating={restaurant.average_rating}
-						/>
-					))}
-			</div>
+		<div className='flex flex-col gap-4'>
+			<h1 className='text-4xl font-bold'>Restaurants</h1>
+			{restaurants &&
+				Object.entries(restaurants).map((restaurant) => (
+					<Restaurant
+						key={restaurant[0]}
+						id={restaurant[0]}
+						name={restaurant[1].restaurantName}
+						description={restaurant[1].restaurantDescription}
+						restaurantImage={restaurant[1].restaurantThumbnail}
+						// average_rating={restaurant.average_rating}
+					/>
+				))}
 		</div>
 	)
 }

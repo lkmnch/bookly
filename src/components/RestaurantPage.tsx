@@ -16,6 +16,7 @@ import { useRouter } from "next/navigation"
 type restaurantData = {
 	restaurantName: string
 	restaurantDescription: string
+	restaurantImage: string
 }
 function RestaurantPage({ id }: { id: string }) {
 	const { dateTime } = useContext(AppContext) as RestaurantContextType
@@ -29,6 +30,7 @@ function RestaurantPage({ id }: { id: string }) {
 		if (data) {
 			const parsedData = JSON.parse(data)
 			const restaurant = parsedData[id]
+			console.log(restaurant)
 			setRestaurant(restaurant)
 		}
 	}, [])
@@ -45,22 +47,43 @@ function RestaurantPage({ id }: { id: string }) {
 		}
 	}
 	return (
-		<div className='flex flex-col gap-4'>
-			<div>
-				<img id='CardImage' src='/placeholder-image.png' />
+		restaurant && (
+			<div className=' flex flex-col gap-8'>
+				<div className=' flex gap-4'>
+					<div>
+						{restaurant.restaurantImage ? (
+							<img
+								id='CardImage'
+								className='w-full aspect-video rounded-lg'
+								src={restaurant.restaurantImage}
+							/>
+						) : (
+							<img
+								id='CardImage'
+								className='w-full'
+								src={`/placeholder-image.png`}
+							/>
+						)}
+					</div>
+					<div className='flex flex-col justify-between'>
+						<h1 className='text-2xl font-bold mb-4'>
+							{restaurant.restaurantName}
+						</h1>
+
+						<div className='mb-4'>{restaurant.restaurantDescription}</div>
+						<div className='flex flex-wrap gap-4'>
+							<DatePicker />
+							<TimePicker />
+							<Button onClick={checkAvailabilty}>
+								<span>Verfügbarkeit prüfen</span>
+							</Button>
+						</div>
+					</div>
+				</div>
+
+				<RestaurantMenu />
 			</div>
-			<h1 className='text-2xl'>{restaurant?.restaurantName}</h1>
-			{/* <Rating rating={restaurants[id].average_rating} /> */}
-			{restaurant?.restaurantDescription}
-			<div className='flex gap-4'>
-				<DatePicker />
-				<TimePicker />
-				<Button onClick={checkAvailabilty}>
-					<span>Verfügbarkeit prüfen</span>
-				</Button>
-			</div>
-			<RestaurantMenu />
-		</div>
+		)
 	)
 }
 
