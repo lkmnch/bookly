@@ -24,7 +24,7 @@ import {
 import { Textarea } from "@/components/ui/textarea"
 import { useRouter } from "next/navigation"
 
-function Page({ params }: { params: { id: string } }) {
+function page({ params }: { params: { id: string } }) {
 	const [selectedSeats, setSelectedSeats] = useState<activeSeatType[]>([])
 	const { dateTime } = useContext(AppContext) as RestaurantContextType
 	const router = useRouter()
@@ -175,4 +175,4 @@ function Page({ params }: { params: { id: string } }) {
 	)
 }
 
-export default Page
+export default page
