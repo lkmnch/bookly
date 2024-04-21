@@ -12,6 +12,7 @@ import DatePicker from "./DatePicker"
 import TimePicker from "./TimePicker"
 import RestaurantMenu from "./RestaurantMenu"
 import { useRouter } from "next/navigation"
+import Image from "next/image"
 
 type restaurantData = {
 	restaurantName: string
@@ -52,14 +53,16 @@ function RestaurantPage({ id }: { id: string }) {
 				<div className=' flex gap-4'>
 					<div>
 						{restaurant.restaurantImage ? (
-							<img
+							<Image
 								id='CardImage'
+								alt='restaurantImage'
 								className='w-full aspect-video rounded-lg'
 								src={restaurant.restaurantImage}
 							/>
 						) : (
-							<img
+							<Image
 								id='CardImage'
+								alt='restaurantImage'
 								className='w-full'
 								src={`/placeholder-image.png`}
 							/>

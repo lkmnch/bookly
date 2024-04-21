@@ -10,6 +10,7 @@ import {
 import Rating from "./Rating"
 import Link from "next/link"
 import { RestaurantType, RestaurantContextType } from "../lib/types/restaurant"
+import Image from "next/image"
 
 function Restaurant({
 	id,
@@ -22,14 +23,14 @@ function Restaurant({
 		<Card className=' hover:bg-slate-50 w-full'>
 			<Link href={`/restaurants/${id}`} className='flex'>
 				{restaurantImage ? (
-					<img
+					<Image
 						id='CardImage'
 						src={restaurantImage}
 						alt='Image of Restaurant'
 						className='w-64'
 					/>
 				) : (
-					<img
+					<Image
 						id='CardImage'
 						src={`/placeholder-image.png`}
 						alt='Image of Restaurant'

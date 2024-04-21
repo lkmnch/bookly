@@ -13,7 +13,7 @@ import {
 	TableHeader,
 	TableRow,
 } from "@/components/ui/table"
-
+import Image from "next/image"
 function Administration() {
 	const [restaurants, setRestaurants] = useState<restaurantDataType>()
 	useEffect(() => {
@@ -42,13 +42,13 @@ function Administration() {
 								variant={"outline"}
 								className='w-60 h-60 text-2xl flex flex-col justify-start '>
 								{restaurant[1].restaurantThumbnail ? (
-									<img
+									<Image
 										src={restaurant[1].restaurantThumbnail}
 										alt='thumbnail'
 										className='w-36 rounded-md'
 									/>
 								) : (
-									<img src='/placeholder-image.png' alt='thumbnail' />
+									<Image src='/placeholder-image.png' alt='thumbnail' />
 								)}
 								<div className='text-wrap'>{restaurant[1].restaurantName}</div>
 							</Button>

@@ -19,7 +19,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { restaurantDataType } from "@/lib/types/restaurant"
 import { useRouter } from "next/navigation"
 
-function page() {
+function Page() {
 	const router = useRouter()
 	const formSchema = z.object({
 		restaurantName: z
@@ -48,11 +48,11 @@ function page() {
 			} catch (error) {
 				console.log(error)
 			}
-		} else {
+		} /* else {
 			const data: restaurantDataType = { [0]: { ...values } }
 			localStorage.setItem("restaurants", JSON.stringify(data))
 			router.push("/administration")
-		}
+		} */
 	}
 
 	return (
@@ -103,4 +103,4 @@ function page() {
 	)
 }
 
-export default page
+export default Page
