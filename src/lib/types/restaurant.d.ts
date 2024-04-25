@@ -1,10 +1,12 @@
 export type RestaurantType = {
-	id: string
+	restaurant_id: number
 	name: string
 	description: string
-	restaurantImage: string
-	average_rating?: number
+	fk_owner_id?: number
+	thumbnail_url?: string
+	image1_url?: string
 }
+
 export type restaurantDataType = {
 	[id: string]: {
 		restaurantName: string
@@ -43,11 +45,10 @@ export type activeSeatType = {
 }
 
 export type bookingType = {
-	dateTime: Date
-	bookedSeats: activeSeatType[]
-	firstName: string
-	lastName: string
+	booking_id: number
+	date_time: Date
+	name: string
 	email: string
-	phoneNumber: string
-	specialRequirements?: string | undefined
+	phone_number: string
+	fk_restaurant_id: number
 }

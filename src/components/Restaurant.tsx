@@ -9,32 +9,35 @@ import {
 
 import Rating from "./Rating"
 import Link from "next/link"
-import { RestaurantType, RestaurantContextType } from "../lib/types/restaurant"
+import { RestaurantType } from "../lib/types/restaurant"
 import Image from "next/image"
 
 function Restaurant({
-	id,
+	restaurant_id,
 	name,
 	description,
-	average_rating,
-	restaurantImage,
+	thumbnail_url,
 }: RestaurantType) {
 	return (
 		<Card className=' hover:bg-slate-50 w-full'>
-			<Link href={`/restaurants/${id}`} className='flex'>
-				{restaurantImage ? (
+			<Link href={`/restaurants/${restaurant_id}`} className='flex'>
+				{thumbnail_url ? (
 					<Image
-						id='CardImage'
-						src={restaurantImage}
+						width={256}
+						height={192}
 						alt='Image of Restaurant'
-						className='w-64'
+						priority={true}
+						id='CardImage'
+						src={thumbnail_url}
 					/>
 				) : (
 					<Image
+						width={256}
+						height={192}
+						alt='Image of Restaurant'
+						priority={true}
 						id='CardImage'
 						src={`/placeholder-image.png`}
-						alt='Image of Restaurant'
-						className='w-64'
 					/>
 				)}
 
